@@ -107,12 +107,13 @@ export default function OnboardingModal({ onComplete }: OnboardingModalProps) {
                 >
                   Enable Notifications
                 </Button>
-                <button
+                <Button
                   onClick={() => setStep(2)}
-                  className="text-gray-400 hover:text-gray-300 text-sm underline"
+                  variant="secondary"
+                  className="w-full"
                 >
                   Skip for now
-                </button>
+                </Button>
               </div>
             </>
           ) : (
@@ -161,12 +162,13 @@ export default function OnboardingModal({ onComplete }: OnboardingModalProps) {
                 >
                   {phoneNumber.length === 10 ? 'Save & Continue' : 'Continue'}
                 </Button>
-                <button
+                <Button
                   onClick={handleSkip}
-                  className="text-gray-400 hover:text-gray-300 text-sm underline"
+                  variant="secondary"
+                  className="w-full"
                 >
                   Skip for now
-                </button>
+                </Button>
               </div>
             </>
           )}

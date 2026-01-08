@@ -5,9 +5,10 @@ import { useAuth } from '../hooks/useAuth';
 import { useSlots } from '../hooks/useSlots';
 import CreateSlot from '../components/slots/CreateSlot';
 import SlotCard from '../components/slots/SlotCard';
-import Button from '../components/ui/Button';
+// import Button from '../components/ui/Button';
 import Spinner from '../components/ui/Spinner';
 import NotificationPrompt from '../components/notifications/NotificationPrompt';
+import Navbar from '../components/layout/Navbar';
 
 export default function Slots() {
   const navigate = useNavigate();
@@ -116,55 +117,18 @@ export default function Slots() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navbar */}
-      <nav className="border-b border-amber-600/30 bg-zinc-900/80 backdrop-blur-md sticky top-0 z-30 shadow-lg">
-        <div className="container mx-auto px-4 py-4 max-w-7xl">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <img 
-                src="/EF.jpg" 
-                alt="EthicalFire" 
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-amber-600 shadow-lg shadow-amber-500/30"
-              />
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
-                  EthicalFire
-                </h1>
-                <p className="text-xs text-gray-400">{selectedGame} Slots</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                onClick={() => navigate('/chat')}
-                variant="secondary"
-                className="text-sm relative"
-              >
-                💬 Chat
-                {/* Add red dot for new messages */}
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-              </Button>
-              <Button
-                onClick={() => navigate('/settings')}
-                variant="secondary"
-                className="text-sm px-3"
-              >
-                ⚙️
-              </Button>
-              <Button
-                onClick={handleSignOut}
-                variant="secondary"
-                className="text-sm"
-              >
-                Sign Out
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+
+      <Navbar 
+        user={user}
+        gameName={selectedGame}
+        onSignOut={handleSignOut}
+        unreadMessages={3} // You can track this with state later
+      />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-screen-2xl">
         {/* Create Slot Section */}
-        <div className="mb-8">
+        <div className="mb-8 max-w-4xl mx-auto">
           <CreateSlot 
             onCreate={handleCreateSlot}
             gameName={selectedGame}
@@ -197,7 +161,7 @@ export default function Slots() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-zinc-900 border-2 border-amber-600/30 rounded-2xl p-12 text-center"
+            className="bg-zinc-900 border-2 border-amber-600/30 rounded-2xl p-12 text-center max-w-2xl mx-auto"
           >
             <div className="text-6xl mb-4">🎮</div>
             <h3 className="text-2xl font-bold text-white mb-2">No Active Slots</h3>
@@ -208,7 +172,7 @@ export default function Slots() {
             </div>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 lg:gap-6">
             <AnimatePresence mode="popLayout">
               {slots.map((slot) => (
                 <SlotCard
@@ -230,7 +194,7 @@ export default function Slots() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-12 p-6 bg-zinc-900/50 border border-amber-600/20 rounded-xl"
+          className="mt-12 p-6 bg-zinc-900/50 border border-amber-600/20 rounded-xl max-w-4xl mx-auto"
         >
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
             <div>
@@ -248,6 +212,7 @@ export default function Slots() {
           </div>
         </motion.div>
       </div>
+
 
       {/* Notification Prompt */}
       {showNotificationPrompt && (

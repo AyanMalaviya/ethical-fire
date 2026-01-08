@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useNotifications } from '../hooks/useNotifications';
 import Button from '../components/ui/Button';
 import Spinner from '../components/ui/Spinner';
+import Navbar from '../components/layout/Navbar';
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -27,45 +28,16 @@ export default function Settings() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navbar */}
-      <nav className="border-b border-amber-600/30 bg-zinc-900/80 backdrop-blur-md sticky top-0 z-30 shadow-lg">
-        <div className="container mx-auto px-4 py-4 max-w-7xl">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <img 
-                src="/EF.jpg" 
-                alt="EthicalFire" 
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-amber-600 shadow-lg shadow-amber-500/30"
-              />
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
-                  Settings
-                </h1>
-                <p className="text-xs text-gray-400">Notification preferences</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                onClick={() => navigate('/home')}
-                variant="secondary"
-                className="text-sm"
-              >
-                ← Back
-              </Button>
-              <Button
-                onClick={handleSignOut}
-                variant="secondary"
-                className="text-sm"
-              >
-                Sign Out
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar 
+        user={user}
+        gameName="Settings"
+        onSignOut={handleSignOut}
+        unreadMessages={0}
+      />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
-        <div className="bg-zinc-900 border-2 border-amber-600/30 rounded-2xl p-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-4xl">
+        <div className="bg-zinc-900 border-2 border-amber-600/30 rounded-2xl p-6 sm:p-8">
           <h2 className="text-2xl font-bold text-white mb-6">Notifications</h2>
 
           {/* Support Check */}
@@ -132,14 +104,13 @@ export default function Settings() {
                       alert('❌ Failed: ' + result.error);
                     }
                   }}
-                  variant="danger"
-                  className="w-full"
+                  variant="secondary"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white border-red-700"
                 >
                   🔕 Disable Notifications
                 </Button>
               </>
             )}
-
 
             {permission === 'denied' && (
               <div className="text-center p-4 bg-zinc-800/50 rounded-xl">
