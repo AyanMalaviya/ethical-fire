@@ -3,13 +3,11 @@ export type SlotStatus = 'ACTIVE' | 'CANCELLED' | 'COMPLETED';
 
 export interface User {
   userId: string;
-  phoneNumber?: string;
   email?: string;
   displayName?: string;
   selectedGame?: string;
   hasCreatedSlot: boolean;
   role: UserRole;
-  createdAt: string;
 }
 
 export interface Game {
@@ -17,19 +15,26 @@ export interface Game {
   name: string;
   displayName: string;
   icon?: string;
+  imagePath?: string;
   isActive: boolean;
   maxPlayers: number;
 }
 
 export interface Slot {
   id: string;
-  gameId: string;
-  creatorId: string;
+  gameName: string;
   startTime: string;
   status: SlotStatus;
-  players: string[];
-  waitingQueue: string[];
+  creatorId: string;
+  creatorName?: string;
+  players?: string[];
+  playerNames?: string[];
+  waitingQueue?: string[];
+  waitingQueueNames?: string[];
   maxPlayers: number;
+  description?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ChatMessage {
@@ -38,5 +43,13 @@ export interface ChatMessage {
   senderId: string;
   senderName: string;
   message: string;
-  createdAt: string;
+  createdAt?: string;
+}
+
+export interface CreateSlotInput {
+  gameName: string;
+  startTime: string;
+  description?: string;
+  creatorId: string;
+  creatorName: string;
 }

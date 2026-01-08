@@ -1,52 +1,38 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
 const schema = a.schema({
-  User: a
-    .model({
-      userId: a.id().required(),
-      email: a.string(),
-      displayName: a.string(),
-      selectedGame: a.string(),
-      hasCreatedSlot: a.boolean().default(false),
-      role: a.enum(['USER', 'ADMIN']),
-      slots: a.hasMany('Slot', 'creatorId'),
-    })
-    .authorization((allow) => [
-      allow.owner(),
-      allow.authenticated().to(['read']),
-      allow.group('ADMIN'),
-    ]),
-
   Slot: a
     .model({
-      gameId: a.string().required(),
       gameName: a.string().required(),
-      creatorId: a.id().required(),
-      creatorName: a.string(),
       startTime: a.datetime().required(),
       status: a.enum(['ACTIVE', 'CANCELLED', 'COMPLETED']),
+      creatorId: a.string().required(),
+      creatorName: a.string(),
       players: a.string().array(),
       playerNames: a.string().array(),
       waitingQueue: a.string().array(),
-      maxPlayers: a.integer().default(4),
+      waitingQueueNames: a.string().array(),
+      maxPlayers: a.integer(),
       description: a.string(),
+      createdAt: a.datetime(),
+      updatedAt: a.datetime(),
     })
     .authorization((allow) => [
-      allow.authenticated().to(['read']),
-      allow.owner().to(['create', 'update', 'delete']),
+      allow.authenticated().to(['read', 'create', 'update', 'delete']),
       allow.group('ADMIN'),
     ]),
 
   ChatMessage: a
     .model({
       roomId: a.string().required(),
-      senderId: a.id().required(),
+      senderId: a.string().required(),
       senderName: a.string().required(),
       message: a.string().required(),
+      createdAt: a.datetime(),
     })
     .authorization((allow) => [
       allow.authenticated().to(['read', 'create']),
-      allow.group('ADMIN'),
+      allow.group('ADMIN').to(['delete']),
     ]),
 });
 
