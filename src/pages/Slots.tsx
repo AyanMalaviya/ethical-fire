@@ -122,14 +122,23 @@ export default function Slots() {
                 </h1>
                 <p className="text-xs text-gray-400">{selectedGame} Slots</p>
               </div>
+              <div className="flex items-center gap-2">
+                <Button
+                onClick={() => navigate('/chat')}
+                variant="secondary"
+                className="text-sm"
+                >
+                💬 Chat
+                </Button>
+                <Button
+                onClick={handleSignOut}
+                variant="secondary"
+                className="text-sm"
+                >
+                Sign Out
+                </Button>
+              </div>
             </div>
-            <Button
-              onClick={handleSignOut}
-              variant="secondary"
-              className="text-sm"
-            >
-              Sign Out
-            </Button>
           </div>
         </div>
       </nav>

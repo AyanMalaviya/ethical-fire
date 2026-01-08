@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import GameSelection from './pages/GameSelection';
 import Slots from './pages/Slots';
+import Chat from './pages/Chat';
 import { useAuth } from './hooks/useAuth';
 import Spinner from './components/ui/Spinner';
 
@@ -41,7 +42,15 @@ function App() {
             </ProtectedRoute>
           } 
         />
-        <Route path="/" element={<Navigate to={user ? "/game-selection" : "/login"} />} />
+        <Route 
+          path="/chat" 
+          element={
+            <ProtectedRoute>
+              <Chat />
+            </ProtectedRoute>
+          } 
+        />
+        <Route path="/" element={<Navigate to={user ? "/home" : "/login"} />} />
       </Routes>
     </BrowserRouter>
   );
