@@ -4,13 +4,12 @@ const schema = a.schema({
   User: a
     .model({
       userId: a.id().required(),
-      phoneNumber: a.string(),
       email: a.string(),
       displayName: a.string(),
       selectedGame: a.string(),
       hasCreatedSlot: a.boolean().default(false),
       role: a.enum(['USER', 'ADMIN']),
-      createdAt: a.datetime(),
+      slots: a.hasMany('Slot', 'creatorId'),
     })
     .authorization((allow) => [
       allow.owner(),
@@ -18,28 +17,19 @@ const schema = a.schema({
       allow.group('ADMIN'),
     ]),
 
-  Game: a
-    .model({
-      name: a.string().required(),
-      displayName: a.string().required(),
-      icon: a.string(),
-      isActive: a.boolean().default(true),
-      maxPlayers: a.integer().default(4),
-    })
-    .authorization((allow) => [
-      allow.authenticated().to(['read']),
-      allow.group('ADMIN'),
-    ]),
-
   Slot: a
     .model({
-      gameId: a.id().required(),
+      gameId: a.string().required(),
+      gameName: a.string().required(),
       creatorId: a.id().required(),
+      creatorName: a.string(),
       startTime: a.datetime().required(),
       status: a.enum(['ACTIVE', 'CANCELLED', 'COMPLETED']),
       players: a.string().array(),
+      playerNames: a.string().array(),
       waitingQueue: a.string().array(),
       maxPlayers: a.integer().default(4),
+      description: a.string(),
     })
     .authorization((allow) => [
       allow.authenticated().to(['read']),
@@ -53,7 +43,6 @@ const schema = a.schema({
       senderId: a.id().required(),
       senderName: a.string().required(),
       message: a.string().required(),
-      createdAt: a.datetime(),
     })
     .authorization((allow) => [
       allow.authenticated().to(['read', 'create']),
