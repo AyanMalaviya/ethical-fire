@@ -5,6 +5,7 @@ import Slots from './pages/Slots';
 import Chat from './pages/Chat';
 import { useAuth } from './hooks/useAuth';
 import Spinner from './components/ui/Spinner';
+import Settings from './pages/Settings';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -51,6 +52,15 @@ function App() {
           } 
         />
         <Route path="/" element={<Navigate to={user ? "/home" : "/login"} />} />
+        <Route 
+          path="/settings" 
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          } 
+        />
+
       </Routes>
     </BrowserRouter>
   );

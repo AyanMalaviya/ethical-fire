@@ -53,3 +53,21 @@ export interface CreateSlotInput {
   creatorId: string;
   creatorName: string;
 }
+
+// Notification types
+export interface PushNotificationData {
+  title: string;
+  body: string;
+  url?: string;
+  tag?: string;
+  icon?: string;
+  badge?: string;
+  requireInteraction?: boolean;
+  actions?: NotificationAction[];
+}
+
+export interface NotificationAction {
+  action: string;
+  title: string;
+  icon?: string;
+}

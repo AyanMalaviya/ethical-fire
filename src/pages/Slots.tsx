@@ -7,6 +7,7 @@ import CreateSlot from '../components/slots/CreateSlot';
 import SlotCard from '../components/slots/SlotCard';
 import Button from '../components/ui/Button';
 import Spinner from '../components/ui/Spinner';
+import NotificationPrompt from '../components/notifications/NotificationPrompt';
 
 export default function Slots() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function Slots() {
   const { slots, loading: slotsLoading, createSlot, joinSlot, leaveSlot } = useSlots(selectedGame);
   const [hasCreatedSlot, setHasCreatedSlot] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [showNotificationPrompt, setShowNotificationPrompt] = useState(false);
 
   useEffect(() => {
     if (user && slots) {
@@ -22,6 +24,14 @@ export default function Slots() {
       setHasCreatedSlot(!!userSlot);
     }
   }, [slots, user]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNotificationPrompt(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   async function handleCreateSlot(slotData: { startTime: string; description: string }) {
     if (!user) {
@@ -74,7 +84,6 @@ export default function Slots() {
     const slot = slots.find(s => s.id === slotId);
     const isCreator = slot?.creatorId === user.userId;
     
-    // Confirm if creator is leaving
     if (isCreator) {
       const playersCount = (slot?.players || []).length;
       if (playersCount > 1) {
@@ -122,22 +131,31 @@ export default function Slots() {
                 </h1>
                 <p className="text-xs text-gray-400">{selectedGame} Slots</p>
               </div>
-              <div className="flex items-center gap-2">
-                <Button
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
                 onClick={() => navigate('/chat')}
                 variant="secondary"
-                className="text-sm"
-                >
+                className="text-sm relative"
+              >
                 💬 Chat
-                </Button>
-                <Button
+                {/* Add red dot for new messages */}
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+              </Button>
+              <Button
+                onClick={() => navigate('/settings')}
+                variant="secondary"
+                className="text-sm px-3"
+              >
+                ⚙️
+              </Button>
+              <Button
                 onClick={handleSignOut}
                 variant="secondary"
                 className="text-sm"
-                >
+              >
                 Sign Out
-                </Button>
-              </div>
+              </Button>
             </div>
           </div>
         </div>
@@ -230,6 +248,11 @@ export default function Slots() {
           </div>
         </motion.div>
       </div>
+
+      {/* Notification Prompt */}
+      {showNotificationPrompt && (
+        <NotificationPrompt onClose={() => setShowNotificationPrompt(false)} />
+      )}
     </div>
   );
 }

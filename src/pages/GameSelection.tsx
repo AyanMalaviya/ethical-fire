@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import GameCard from '../components/game/GameCard';
 import { useAuth } from '../hooks/useAuth';
 import Spinner from '../components/ui/Spinner';
+import OnboardingModal from '../components/onboarding/OnboardingModal';
 
 interface Game {
   id: string;
@@ -18,6 +19,7 @@ export default function GameSelection() {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const games: Game[] = [
     {
@@ -45,6 +47,13 @@ export default function GameSelection() {
       isActive: false,
     },
   ];
+  
+  useEffect(() => {
+  const hasCompletedOnboarding = localStorage.getItem('onboarding_completed');
+  if (!hasCompletedOnboarding) {
+    setShowOnboarding(true);
+  }
+}, []);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -153,6 +162,11 @@ export default function GameSelection() {
             </h2>
           </motion.div>
         </motion.div>
+      )}
+      
+      {/* Onboarding Modal */}
+      {showOnboarding && (
+        <OnboardingModal onComplete={() => setShowOnboarding(false)} />
       )}
     </div>
   );

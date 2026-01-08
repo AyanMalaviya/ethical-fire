@@ -15,7 +15,6 @@ export function useAuth() {
       const currentUser = await getCurrentUser();
       const session = await fetchAuthSession();
       
-      // Check if user is in admin group
       const groups = session.tokens?.accessToken?.payload['cognito:groups'] as string[] || [];
       setIsAdmin(groups.includes('ADMIN'));
       
